@@ -138,7 +138,7 @@ export default function WalnetWorker() {
   return (
     <div className="grid grid-cols-1 gap-6 relative z-10 mt-6 min-h-[1200px]">
       <div className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg p-6 rounded-lg shadow">
-        <h2 className="text-2xl font-semibold mb-4 flex items-center text-white">
+        {/* <h2 className="text-2xl font-semibold mb-4 flex items-center text-white">
           <MdSearch className="w-6 h-6 mr-2 mt-2 text-blue-400" />
           Connect New Worker
         </h2>
@@ -154,7 +154,7 @@ export default function WalnetWorker() {
             <li>Authorize your device to start earning rewards</li>
             <li>View and manage your connected workers</li>
           </ul>
-        </div>
+        </div> */}
 
         <div className="mx-auto flex h-full">
           {/* Creation Steps */}
