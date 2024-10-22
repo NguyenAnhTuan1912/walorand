@@ -1,9 +1,15 @@
+// Import utils
+import BrowserStorageUtils from "../utils/browser_storage";
+
 function _createAccount(isClean) {
-  if (isClean) return null;
+  if (isClean) {
+    BrowserStorageUtils.removeItem("axd");
+  }
 
   return {
-    balance: 0,
-    address: null,
+    address: BrowserStorageUtils.getItem("axd") || null,
+    details: null,
+    isConnected: Boolean(BrowserStorageUtils.getItem("axd")),
   };
 }
 
@@ -17,12 +23,6 @@ function accountReducer(state = getInitialState(false), action) {
     return tmpState;
   }
 
-  if (action.type === "account::store_balance") {
-    const tmpState = { ...state };
-    tmpState.balance = action.payload;
-    return tmpState;
-  }
-
   if (action.type === "account::remove_self") {
     return getInitialState(true);
   }
@@ -30,6 +30,33 @@ function accountReducer(state = getInitialState(false), action) {
   if (action.type === "account::set_address") {
     const tmpState = { ...state };
     tmpState.address = action.payload;
+
+    if (action.payload) {
+      BrowserStorageUtils.setItem("axd", action.payload);
+    }
+
+    return tmpState;
+  }
+
+  if (action.type === "account::set_isconnected") {
+    const tmpState = { ...state };
+    tmpState.isConnected = Boolean(action.payload);
+    if (action.payload) {
+      tmpState.address = BrowserStorageUtils.getItem("axd");
+    } else {
+      tmpState.address = null;
+    }
+    return tmpState;
+  }
+
+  if (action.type === "account::set_details") {
+    const tmpState = { ...state };
+
+    // Get balance in details for now
+    tmpState.details = {
+      balance: action.payload.amount,
+    };
+
     return tmpState;
   }
 

@@ -1,4 +1,4 @@
-import { omitKeys } from "../object";
+import { omitKeys } from "./object";
 
 /**
  * A higher-order function that uses Intl.NumberFormat behind the scenes to format a number

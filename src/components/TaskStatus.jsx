@@ -8,47 +8,47 @@ import { AiOutlineFieldTime } from "react-icons/ai";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 
 // Import components
-import { toast } from "../../shared/use-toast";
+import { toast } from "./shared/use-toast";
+import CustomSelect from "./CustomSelect";
 
 // Import hooks
-import { useAccount } from "../../../hooks/useAccount";
+import { useWallet } from "../hooks/useWallet";
 
 // Import utils
 import { DNetABI } from "../utils/abi";
-import CustomSelect from "./CustomSelect";
 
 export default function TaskStatus() {
-  const { account } = useAccount();
+  const { account, signAndSubmitTransaction, waitTransaction } = useWallet();
   // const { signAndSubmitTransaction } = useAptosWallet();
   const [clusterIds, setClusterIds] = React.useState([]);
   const [selectedClusterId, setSelectedClusterId] = React.useState("");
   const [selectedTasksInfo, setSelectedTasksInfo] = React.useState(null);
 
   React.useEffect(() => {
-    if (account) {
-      queryClustersId();
-    }
+    // if (account) {
+    //   queryClustersId();
+    // }
   }, [account]);
 
-  const queryClustersId = async () => {
-    try {
-      const response = await aptosClient().view({
-        payload: {
-          function: `${MovementDNetABI.address}::network::query_clusters_id`,
-          typeArguments: [],
-          functionArguments: [account.address],
-        },
-      });
-      setClusterIds(response[0]);
-      console.log("response", response);
-    } catch (error) {
-      console.error("Error querying cluster IDs:", error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch cluster IDs. Please try again.",
-      });
-    }
-  };
+  // const queryClustersId = async () => {
+  //   try {
+  //     const response = await aptosClient().view({
+  //       payload: {
+  //         function: `${MovementDNetABI.address}::network::query_clusters_id`,
+  //         typeArguments: [],
+  //         functionArguments: [account.address],
+  //       },
+  //     });
+  //     setClusterIds(response[0]);
+  //     console.log("response", response);
+  //   } catch (error) {
+  //     console.error("Error querying cluster IDs:", error);
+  //     toast({
+  //       title: "Error",
+  //       description: "Failed to fetch cluster IDs. Please try again.",
+  //     });
+  //   }
+  // };
 
   const handleSubmit = async function (e) {
     e.preventDefault();
@@ -58,33 +58,54 @@ export default function TaskStatus() {
       return;
     }
 
+    const transactionId = await signAndSubmitTransaction({
+      signer: account.address,
+    });
+
+    const result = await waitTransaction(transactionId);
+
+    console.log("Result:", result);
+
+    toast({
+      title: "Task Query",
+      description: "Get task information successfully",
+    });
+
     if (selectedClusterId) {
       try {
-        const response = await aptosClient().view({
-          payload: {
-            function: `${MovementDNetABI.address}::network::query_cluster_tasks`,
-            typeArguments: [],
-            functionArguments: [selectedClusterId],
-          },
+        // const response = await aptosClient().view({
+        //   payload: {
+        //     function: `${MovementDNetABI.address}::network::query_cluster_tasks`,
+        //     typeArguments: [],
+        //     functionArguments: [selectedClusterId],
+        //   },
+        // });
+
+        // const taskInfoPromises = response[0].map((taskId) =>
+        //   aptosClient().view({
+        //     payload: {
+        //       function: `${MovementDNetABI.address}::network::query_task_info`,
+        //       typeArguments: [],
+        //       functionArguments: [parseInt(taskId)],
+        //     },
+        //   })
+        // );
+
+        // const taskInfoResponses = await Promise.all(taskInfoPromises);
+        // const tasksInfo = response[0].map((id, index) => ({
+        //   id,
+        //   ...taskInfoResponses[index],
+        // }));
+        // console.log("tasksInfo", tasksInfo);
+        // setSelectedTasksInfo(tasksInfo);
+
+        const transactionId = await signAndSubmitTransaction({
+          signer: account.address,
         });
 
-        const taskInfoPromises = response[0].map((taskId) =>
-          aptosClient().view({
-            payload: {
-              function: `${MovementDNetABI.address}::network::query_task_info`,
-              typeArguments: [],
-              functionArguments: [parseInt(taskId)],
-            },
-          })
-        );
+        const result = await waitTransaction(transactionId);
 
-        const taskInfoResponses = await Promise.all(taskInfoPromises);
-        const tasksInfo = response[0].map((id, index) => ({
-          id,
-          ...taskInfoResponses[index],
-        }));
-        console.log("tasksInfo", tasksInfo);
-        setSelectedTasksInfo(tasksInfo);
+        console.log("Result:", result);
 
         toast({
           title: "Task Query",

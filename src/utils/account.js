@@ -3,10 +3,16 @@ import { microalgosToAlgos } from "algosdk";
 import { clientForChain } from "./algod";
 import { formatNumber } from "./number";
 
-function getAccountBalanceText(account) {
-  return `${formatNumber({ minimumFractionDigits: 2 })(
-    microalgosToAlgos(Number(account.amount))
-  )} ALGO`;
+function getAlgo(balance = 0) {
+  return formatNumber({ minimumFractionDigits: 2 })(
+    microalgosToAlgos(Number(balance))
+  );
+}
+
+function getAccountBalanceText(details) {
+  if (!details) return "0.00 ALGO";
+
+  return `${getAlgo(details.balance)} ALGO`;
 }
 
 function getAccountInformation(chain, address) {
@@ -19,4 +25,4 @@ function getAccountInformation(chain, address) {
   });
 }
 
-export { getAccountBalanceText, getAccountInformation };
+export { getAccountBalanceText, getAccountInformation, getAlgo };

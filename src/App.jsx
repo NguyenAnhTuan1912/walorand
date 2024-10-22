@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { FaNetworkWired } from "react-icons/fa";
 
 // Import components
-// import TaskStatus from "../src/components/TaskStatus";
+import TaskStatus from "../src/components/TaskStatus";
 // import SubmitTask from "../src/components/SubmitTask";
 // import CompleteTask from "../src/components/CompleteTask";
 // import RegisterNode from "../src/components/RegisterNode";
@@ -15,7 +15,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "../src/components/shared/tab-set";
-import { Boxes } from "../src/components/shared/background-boxes";
+import AccountDetails from "./components/AccountDetails";
 
 // Import hooks
 import { useWallet } from "./hooks/useWallet";
@@ -23,17 +23,16 @@ import { useWallet } from "./hooks/useWallet";
 import "./App.css";
 
 export default function App() {
-  const { connect } = useWallet();
-
   return (
     <div className="w-full h-screen bg-gradient-to-r from-[#1D2235] to-[#121318] overflow-hidden">
-      <button onClick={() => connect()}>Connect</button>
+      <header className="flex justify-between items-center p-4">
+        <h1 className="text-3xl text-white font-bold flex items-center mb-6 relative z-10">
+          <FaNetworkWired className="mr-3" /> GPU Sharing DePIN Network
+        </h1>
+        <AccountDetails />
+      </header>
       <section className="text-white overflow-y-auto">
         <div className="w-full max-w-full p-4">
-          <h1 className="text-3xl font-bold flex items-center mb-6 relative z-10">
-            <FaNetworkWired className="mr-3" /> GPU Sharing DePIN Network
-          </h1>
-
           <Tabs defaultValue="complete_task" className="w-full">
             <TabsList>
               <TabsTrigger value="query_task">Query Task</TabsTrigger>
@@ -43,7 +42,9 @@ export default function App() {
               <TabsTrigger value="walnet_cloud">Walnet Cloud</TabsTrigger>
               <TabsTrigger value="walnet_worker">Walnet Worker</TabsTrigger>
             </TabsList>
-            <TabsContent value="query_task">{/* <TaskStatus /> */}</TabsContent>
+            <TabsContent value="query_task">
+              <TaskStatus />
+            </TabsContent>
             {/* <TabsContent value="complete_task">
               <CompleteTask />
             </TabsContent> */}

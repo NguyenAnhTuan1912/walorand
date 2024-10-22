@@ -13,19 +13,20 @@ const testNetClient = new algosdk.Algodv2(
 
 function clientForChain(chain) {
   switch (chain) {
-    case ChainType.MainNet:
+    case "mainnet":
+      console.log("USE MAINNET");
       return mainNetClient;
-    case ChainType.TestNet:
+    case "testnet":
+      console.log("USE TESTNET");
       return testNetClient;
     default:
       throw new Error(`Unknown chain type: ${chain}`);
   }
 }
 
-async function apiGetTxnParams(chain) {
+async function getTxnParams(chain) {
   const params = await clientForChain(chain).getTransactionParams().do();
-
   return params;
 }
 
-export { clientForChain, apiGetTxnParams };
+export { clientForChain, getTxnParams };
