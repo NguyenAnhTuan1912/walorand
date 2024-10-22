@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import {
   FaCloudUploadAlt,
   FaMicrochip,
@@ -15,17 +14,16 @@ import {
 import ReactCountryFlag from "react-country-flag";
 
 // Import components
-import { toast } from "../../shared/use-toast";
+import { toast } from "./shared/use-toast";
 
 // Import hooks
-import { useAccount } from "../../../hooks/useAccount";
 
 // Import utils
 import { DNetABI } from "../utils/abi";
+import { useWallet } from "../hooks/useWallet";
 
 export default function WalnetProvider() {
-  const { account, metadata, refreshBalance } = useAccount();
-  const { signAndSubmitTransaction } = useWallet();
+  const { account, signAndSubmitTransaction, waitTransaction } = useWallet();
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedClusterType, setSelectedClusterType] = useState(null);
   const [selectedLocations, setSelectedLocations] = useState([]);
@@ -285,13 +283,12 @@ export default function WalnetProvider() {
                 <div key={index} className="flex items-center relative">
                   <div
                     className={`absolute left-[-26px] w-6 h-6 rounded-full 
-                    ${
-                      index + 1 < currentStep
+                    ${index + 1 < currentStep
                         ? "bg-blue-500"
                         : index + 1 === currentStep
-                        ? "bg-blue-500"
-                        : "bg-white bg-opacity-10 border-gray-600"
-                    } 
+                          ? "bg-blue-500"
+                          : "bg-white bg-opacity-10 border-gray-600"
+                      } 
                     flex items-center justify-center`}
                   >
                     {index + 1 < currentStep ? (
@@ -345,21 +342,19 @@ export default function WalnetProvider() {
                   {clusterTypes.map((type) => (
                     <div
                       key={type.id}
-                      className={`border ${
-                        selectedClusterType === type.id
-                          ? "border-blue-500"
-                          : "border-gray-600"
-                      } rounded-lg p-4 bg-white bg-opacity-5 hover:bg-opacity-10 transition-all duration-300 cursor-pointer`}
+                      className={`border ${selectedClusterType === type.id
+                        ? "border-blue-500"
+                        : "border-gray-600"
+                        } rounded-lg p-4 bg-white bg-opacity-5 hover:bg-opacity-10 transition-all duration-300 cursor-pointer`}
                       onClick={() => handleClusterTypeSelect(type.id)}
                     >
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="text-lg text-white">{type.name}</h3>
                         <div
-                          className={`w-6 h-6 rounded-full border-2 ${
-                            selectedClusterType === type.name
-                              ? "border-blue-500 bg-blue-500"
-                              : "border-gray-400"
-                          } flex items-center justify-center`}
+                          className={`w-6 h-6 rounded-full border-2 ${selectedClusterType === type.name
+                            ? "border-blue-500 bg-blue-500"
+                            : "border-gray-400"
+                            } flex items-center justify-center`}
                         >
                           {selectedClusterType === type.id && (
                             <div className="w-3 h-3 rounded-full bg-white"></div>
@@ -401,11 +396,10 @@ export default function WalnetProvider() {
                   {filteredCountries.map((country) => (
                     <div
                       key={country.code}
-                      className={`flex items-center justify-between p-4 rounded-md cursor-pointer ${
-                        selectedLocations.includes(country.code)
-                          ? "bg-blue-600 bg-opacity-70"
-                          : "bg-white bg-opacity-5 hover:bg-opacity-10"
-                      } transition-all duration-300`}
+                      className={`flex items-center justify-between p-4 rounded-md cursor-pointer ${selectedLocations.includes(country.code)
+                        ? "bg-blue-600 bg-opacity-70"
+                        : "bg-white bg-opacity-5 hover:bg-opacity-10"
+                        } transition-all duration-300`}
                       onClick={() => handleLocationSelect(country.code)}
                     >
                       <div className="flex items-center">
@@ -447,21 +441,19 @@ export default function WalnetProvider() {
               <div className="">
                 <div className="flex mb-6 space-x-2">
                   <button
-                    className={`px-4 py-2 rounded-lg transition-all duration-300 ${
-                      selectedType === "all"
-                        ? "bg-blue-600 text-white"
-                        : "bg-white bg-opacity-10 text-gray-300 hover:bg-opacity-30"
-                    }`}
+                    className={`px-4 py-2 rounded-lg transition-all duration-300 ${selectedType === "all"
+                      ? "bg-blue-600 text-white"
+                      : "bg-white bg-opacity-10 text-gray-300 hover:bg-opacity-30"
+                      }`}
                     onClick={() => setSelectedType("all")}
                   >
                     All
                   </button>
                   <button
-                    className={`px-4 py-2 rounded-lg flex items-center transition-all duration-300 ${
-                      selectedType === "nvidia"
-                        ? "bg-blue-600 text-white"
-                        : "bg-white bg-opacity-10 text-gray-300 hover:bg-opacity-30"
-                    }`}
+                    className={`px-4 py-2 rounded-lg flex items-center transition-all duration-300 ${selectedType === "nvidia"
+                      ? "bg-blue-600 text-white"
+                      : "bg-white bg-opacity-10 text-gray-300 hover:bg-opacity-30"
+                      }`}
                     onClick={() => setSelectedType("nvidia")}
                   >
                     <img
@@ -471,11 +463,10 @@ export default function WalnetProvider() {
                     NVIDIA
                   </button>
                   <button
-                    className={`px-4 py-2 rounded-lg flex items-center transition-all duration-300 ${
-                      selectedType === "apple"
-                        ? "bg-blue-600 text-white"
-                        : "bg-white bg-opacity-10 text-gray-300 hover:bg-opacity-30"
-                    }`}
+                    className={`px-4 py-2 rounded-lg flex items-center transition-all duration-300 ${selectedType === "apple"
+                      ? "bg-blue-600 text-white"
+                      : "bg-white bg-opacity-10 text-gray-300 hover:bg-opacity-30"
+                      }`}
                     onClick={() => setSelectedType("apple")}
                   >
                     <FaApple className="mr-2 w-6 h-6" /> Apple
@@ -497,11 +488,10 @@ export default function WalnetProvider() {
                   {filteredProcessors.map((processor) => (
                     <div
                       key={processor.id}
-                      className={`flex items-center justify-between p-4 rounded-md cursor-pointer ${
-                        selectedProcessor === processor.id
-                          ? "bg-blue-600 bg-opacity-70"
-                          : "bg-white bg-opacity-5 hover:bg-opacity-10"
-                      } transition-all duration-300`}
+                      className={`flex items-center justify-between p-4 rounded-md cursor-pointer ${selectedProcessor === processor.id
+                        ? "bg-blue-600 bg-opacity-70"
+                        : "bg-white bg-opacity-5 hover:bg-opacity-10"
+                        } transition-all duration-300`}
                       onClick={() => setSelectedProcessor(processor.id)}
                     >
                       <div className="flex items-center">
@@ -527,11 +517,10 @@ export default function WalnetProvider() {
                       </div>
                       <div className="flex items-center">
                         <div
-                          className={`font-semibold mr-3 ${
-                            processor.count > 0
-                              ? "text-green-400"
-                              : "text-red-400"
-                          }`}
+                          className={`font-semibold mr-3 ${processor.count > 0
+                            ? "text-green-400"
+                            : "text-red-400"
+                            }`}
                         >
                           {processor.count}
                         </div>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-// import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import {
   FaCloudUploadAlt,
   FaMicrochip,
@@ -8,18 +7,16 @@ import {
 } from "react-icons/fa";
 
 // Import components
-import { toast } from "../../shared/use-toast";
+import { toast } from "./shared/use-toast";
 
 // Import hooks
-import { useAccount } from "../../../hooks/useAccount";
 
 // Import utils
-import { DNetABI } from "../utils/abi";
 import CustomSelect from "./CustomSelect";
+import { useWallet } from "../hooks/useWallet";
 
 export default function SubmitTask() {
-  const { account, metadata, refreshBalance } = useAccount();
-  const { signAndSubmitTransaction } = useWallet();
+  const { account, signAndSubmitTransaction, waitTransaction } = useWallet();
   const [clusterIds, setClusterIds] = useState([]);
   const [selectedClusterId, setSelectedClusterId] = useState("");
   const [selectedClusterInfo, setSelectedClusterInfo] = useState(null);

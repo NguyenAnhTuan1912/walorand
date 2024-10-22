@@ -4,11 +4,11 @@ import { FaNetworkWired } from "react-icons/fa";
 
 // Import components
 import TaskStatus from "../src/components/TaskStatus";
-// import SubmitTask from "../src/components/SubmitTask";
+import SubmitTask from "../src/components/SubmitTask";
 // import CompleteTask from "../src/components/CompleteTask";
 // import RegisterNode from "../src/components/RegisterNode";
-// import WalnetCloud from "../src/components/WalnetCloud";
-// import WalnetWorker from "../src/components/WalnetWoker";
+import WalnetCloud from "../src/components/WalnetCloud";
+import WalnetWorker from "../src/components/WalnetWoker";
 import {
   Tabs,
   TabsContent,
@@ -52,13 +52,13 @@ export default function App() {
               <RegisterNode />
             </TabsContent> */}
             <TabsContent value="submit_task">
-              {/* <SubmitTask /> */}
+              <SubmitTask />
             </TabsContent>
             <TabsContent value="walnet_cloud">
-              {/* <WalnetCloud /> */}
+              <WalnetCloud />
             </TabsContent>
             <TabsContent value="walnet_worker">
-              {/* <WalnetWorker /> */}
+              <WalnetWorker />
             </TabsContent>
           </Tabs>
         </div>
